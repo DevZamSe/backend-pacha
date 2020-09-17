@@ -34,7 +34,7 @@ class Product {
     return result;
   }
   async productosxpuesto(){
-    let query = `SELECT t1.id,t1.nombre,t1.precio,t1.img,t1.categoria from categorias as t0 inner join productos as t1 on t0.id=t1.categoria INNER JOIN detalle_producto as t2 on t1.id=t2.id_producto inner join puestos as t3 on t2.id_puesto inner join caseros as t4 on t3.casero=t4.id`;
+    let query = `SELECT t1.id,t1.nombre,t1.precio,t1.img,t1.categoria,t1.favorito from categorias as t0 inner join productos as t1 on t0.id=t1.categoria INNER JOIN detalle_producto as t2 on t1.id=t2.id_producto inner join puestos as t3 on t2.id_puesto inner join caseros as t4 on t3.casero=t4.id`;
     let params = [];
     let result = await db.query(query, params);
 
