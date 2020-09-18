@@ -17,25 +17,33 @@ class Product {
 
     return result;
   }
-  async categoriaservicio(filtro) {
+  async categoriasxmercado(id_mercado) {
     console.log(arguments);
-    let query = `select t1.cod_servicio,t1.nombre_servicio,t1.duracion,t1.precio,t1.foto,t1.promedio from servicio as t1 inner join categoria as t2 on t1.cod_categoria=t2.cod_categoria where t1.cod_categoria=?`;
-    let params = [filtro];
+    let query = `select t1.id,t1.nombre from categorias as t1 inner JOIN detalle_mercado as t2 on t1.id=t2.id_categoria INNER JOIN mercados as t3 on t2.id_mercado=t3.id where t3.id=?`;
+    let params = [id_mercado];
     let result = await db.query(query, params);
 
     return result;
   }
-  async categoriapeluquerias(filtro) {
-    console.log(arguments);
-    let query = `select t1.cod_peluqueria,t1.nombre,t1.direccion,t1.foto_Centro,t1.promedio from peluqueria as t1 inner join peluqueria_categoria as t2 on t1.cod_peluqueria=t2.cod_peluqueria inner join categoria as t3 on t2.cod_categoria=t3.cod_categoria where t3.cod_categoria=?`;
-    let params = [filtro];
+  async caserosxcategoria(id_categoria){
+  
+    let query = `select t1.id,t1.nombre,t1.img from caseros as t1 INNER JOIN puestos as t2 on t1.id=t2.casero INNER JOIN categorias as t3 on t2.id_categoria=t3.id where t3.id=?`;
+    let params = [id_categoria];
     let result = await db.query(query, params);
 
     return result;
   }
-  async productosxpuesto(){
-    let query = `SELECT t1.id,t1.nombre,t1.precio,t1.img,t1.categoria,t1.favorito from categorias as t0 inner join productos as t1 on t0.id=t1.categoria INNER JOIN detalle_producto as t2 on t1.id=t2.id_producto inner join puestos as t3 on t2.id_puesto inner join caseros as t4 on t3.casero=t4.id`;
-    let params = [];
+  
+  async productosxpuesto(id_casero){
+    let query = `SELECT t0.nombre,t1.id,t1.nombre,t1.precio,t1.img,t1.validate,t1.aniadido from categorias as t0 inner join productos as t1 on t0.id=t1.categoria INNER JOIN detalle_producto as t2 on t1.id=t2.id_producto inner join puestos as t3 on t2.id_puesto inner join caseros as t4 on t3.casero=t4.id where t4.id=?`;
+    let params = [id_casero];
+    let result = await db.query(query, params);
+
+    return result;
+  }
+  async detalleProducto(id_producto){
+    let query = `select * from productos where id=?`;
+    let params = [id_producto];
     let result = await db.query(query, params);
 
     return result;
