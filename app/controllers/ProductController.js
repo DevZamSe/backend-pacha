@@ -62,6 +62,22 @@ async caserosxcategoria(req,res){
       res.send({ success: false, message: "bad request !!" });
     }
   }
+  async agregaralista(req,res){
+    let _ = req.body;
+    let result = await Product.validar_token(_.token);
+
+    if ((result.data = _.token)) {
+      let id=await Product.encontrarid(_.token);
+      let resultado = await Product.agregaralista(id,_.id_producto);
+      if (resultado.length > 0) {
+        res.send({ success: true, message: "succesfully !!", data: resultado });
+      } else {
+        res.send({ success: false, message: "bad request !!" });
+      }
+    } else {
+      res.send({ success: false, message: "bad request !!" });
+    }
+  }
  
   
 }

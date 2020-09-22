@@ -19,9 +19,10 @@ router.post("/user/registroUsuario", UserController.registroUsuario);
 //router.post("/user/changuePass", UserController.changuePass);
 
 router.post("/mercado/categorias", ProductController.categoriasxmercado);
-router.post("/product/productosxpuesto", ProductController.productosxpuesto);
 router.post("/product/detalleProducto", ProductController.detalleProducto);
 router.post("/categorias/caseros", ProductController.caserosxcategoria);
+router.post("/product/productosxpuesto", ProductController.productosxpuesto);
+router.post("/product/agregaralista", ProductController.agregaralista);
 
 
 

@@ -48,6 +48,13 @@ class Product {
 
     return result;
   }
+  async encontrarid(token){
+    let query = `select id from clientes where token=?`;
+    let params = [token];
+    let result = await db.query(query, params);
+
+    return result;
+  }
   
 }
 
