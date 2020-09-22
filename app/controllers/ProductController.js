@@ -62,18 +62,33 @@ async caserosxcategoria(req,res){
       res.send({ success: false, message: "bad request !!" });
     }
   }
-  async agregaralista(req,res){
+  async agregarlista(req,res){
     let _ = req.body;
     let result = await Product.validar_token(_.token);
 
     if ((result.data = _.token)) {
       let id=await Product.encontrarid(_.token);
-      let resultado = await Product.agregaralista(id,_.id_producto);
-      if (resultado.length > 0) {
-        res.send({ success: true, message: "succesfully !!", data: resultado });
-      } else {
-        res.send({ success: false, message: "bad request !!" });
-      }
+       await Product.agregarlista(id,_.tipo);
+     
+        res.send({ success: true, message: "succesfully !!" });
+     
+    } else {
+      res.send({ success: false, message: "bad request !!" });
+    }
+  }
+  async agregaralista(req,res){
+    let _ = req.body;
+    let result = await Product.validar_token(_.token);
+
+    if ((result.data = _.token)) {
+      await Product.agregarprepedido(_.id_producto,_.cantidad,_.precio);
+      let [{id_prepedido}]=await Product.findippre(_.id_producto,_.cantidad,_.precio);
+      console.log(id_prepedido);
+      let [{id_lista}]=await Product.encontrarlista(_.token);
+      await Product.agregaralista(id_lista,id_prepedido);
+      
+        res.send({ success: true, message: "succesfully !!" });
+      
     } else {
       res.send({ success: false, message: "bad request !!" });
     }

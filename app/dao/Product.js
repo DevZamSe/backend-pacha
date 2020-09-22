@@ -55,6 +55,41 @@ class Product {
 
     return result;
   }
+  async agregarlista(id,tipo){
+    let query = `insert into listas(cliente,id_tipo) values(?,?)`;
+    let params = [id,tipo];
+    let result = await db.query(query, params);
+
+    return result;
+  }
+  async agregarprepedido(id_producto,cantidad,precio){
+    let query = `insert into prepedido(id_producto,cantidad,precio) values(?,?,?)`;
+    let params = [id_producto,cantidad,precio];
+    let result = await db.query(query, params);
+
+    return result;
+  }
+  async agregaralista(idlista,idpre){
+    let query = `insert into detalle_lista(id_lista,id_prepedido) values(?,?)`;
+    let params = [idlista,idpre];
+    let result = await db.query(query, params);
+
+    return result;
+  }
+  async findippre(id_producto,cantidad,precio){
+    let query = `select id_prepedido from prepedido where id_producto=? and cantidad=? and precio=?`;
+    let params = [id_producto,cantidad,precio];
+    let result = await db.query(query, params);
+
+    return result;
+  }
+  async encontrarlista(token){
+    let query = `select id from clientes where token=?`;
+    let params = [token];
+    let result = await db.query(query, params);
+
+    return result;
+  }
   
 }
 
