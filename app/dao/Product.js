@@ -55,7 +55,20 @@ class Product {
 
     return result;
   }
-  
+  async agregarFavorito(id_producto, id_cliente, estado){
+    let query = `insert into favoritos(id_cliente,id_producto,estado) values(?,?,?)`;
+    let params = [id_cliente, id_producto, estado]
+    let result = await db.query(query, params)
+
+    return result
+  }
+  async eliminarFavorito(id_cliente, id_producto){
+    let query = `delete from favoritos where id_cliente=? and id_producto=?`
+    let params = [id_cliente, id_producto]
+    let result = await db.query(query, params)
+
+    return result
+  }
 }
 
 module.exports = new Product();

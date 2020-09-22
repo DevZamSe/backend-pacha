@@ -20,7 +20,7 @@ class User {
 
   async updateTokenUser(id_cliente, token) {
     console.log(arguments);
-    let query = `update cliente set token = ? where id_cliente = ?`;
+    let query = `update clientes set token = ? where id_cliente = ?`;
     let params = [token, id_cliente];
     let result = await db.query(query, params);
 
@@ -29,21 +29,12 @@ class User {
 
   async updateToken(tokens, token) {
     console.log(arguments);
-    let query = `update cliente set token = ? where token = ?`;
+    let query = `update clientes set token = ? where token = ?`;
     let params = [tokens, token];
     let result = await db.query(query, params);
 
     return result;
   }
-
-  async validarToken(token) {
-    let query = `select * from cliente where token = ?`;
-    let params = [token];
-    let result = await db.query(query, params);
-
-    return result;
-  }
-
   async registroUsuario(
     nombres,
     apellidos,
@@ -57,7 +48,7 @@ class User {
     latitud,
     longitud
   ) {
-    let query = `insert into cliente(nombres,apellidos,correo,genero,telefono,fecha_nacimiento,correo_opcional,pass,token,latitud,longitud) values(?,?,?,?,?,?,?,?,?,?,?)`;
+    let query = `insert into clientes(nombres,apellidos,correo,genero,telefono,fecha_nacimiento,correo_opcional,pass,token,latitud,longitud) values(?,?,?,?,?,?,?,?,?,?,?)`;
     let params = [
       nombres,
       apellidos,

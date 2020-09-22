@@ -79,7 +79,26 @@ async caserosxcategoria(req,res){
     }
   }
  
-  
+  async agregarFavorito(req, res){
+    let {token, id_producto, estado} = req.body;
+    let result = await Product.validar_token(token);
+
+    if ((result.data = token)) {
+      let [{id}] = await Product.encontrarid(token);
+      console.log(id);
+      console.log(id_producto);
+      console.log(estado);
+      if(estado == 1) {
+        let result = await Product.agregarFavorito(id_producto, id, estado)
+        res.send({ success: true, message: "succesfully !!"});
+      } else {
+        let result = await Product.eliminarFavorito(id, id_producto)
+        res.send({ success: true, message: "succesfully !!" });
+      }
+    } else {
+      res.status(500).send({ success: false, message: "bad request !!" });
+    }
+  }
 }
 
 

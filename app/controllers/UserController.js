@@ -10,9 +10,6 @@ class UserController {
     if (result.length > 0) {
       let user = result[0];
       user.token = token;
-
-     
-      
       res.send({ success: true, message: "Successfully !!", data: result });
     } else {
       res.send({ success: false, message: "Invalid User" });
