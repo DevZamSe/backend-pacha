@@ -67,7 +67,7 @@ async caserosxcategoria(req,res){
     let result = await Product.validar_token(_.token);
 
     if ((result.data = _.token)) {
-      let id=await Product.encontrarid(_.token);
+      let [{id}]=await Product.encontrarid(_.token);
        await Product.agregarlista(id,_.tipo);
      
         res.send({ success: true, message: "succesfully !!" });
@@ -95,19 +95,17 @@ async caserosxcategoria(req,res){
   }
  
   async agregarFavorito(req, res){
-    let {token, id_producto, estado} = req.body;
-    let result = await Product.validar_token(token);
+    let _= req.body;
+    let result = await Product.validar_token(_.token);
 
-    if ((result.data = token)) {
-      let [{id}] = await Product.encontrarid(token);
-      console.log(id);
-      console.log(id_producto);
-      console.log(estado);
-      if(estado == 1) {
-        let result = await Product.agregarFavorito(id_producto, id, estado)
+    if ((result.data = _.token)) {
+      let [{id}] = await Product.encontrarid(_.token);
+     
+      if(_.estado == 1) {
+        await Product.agregarFavorito(_.id_producto, id,_.estado)
         res.send({ success: true, message: "succesfully !!"});
       } else {
-        let result = await Product.eliminarFavorito(id, id_producto)
+        await Product.eliminarFavorito(id,_.id_producto)
         res.send({ success: true, message: "succesfully !!" });
       }
     } else {
