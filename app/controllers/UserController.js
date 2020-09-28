@@ -19,17 +19,15 @@ class UserController {
     let _ = req.body;
     let token = util.generateToken();
     let result = await User.registroUsuario(
-      _.nombres,
-      _.apellidos,
-      _.correo,
-      _.genero,
-      _.telefono,
-      _.fecha_nacimiento,
-      _.correo_opcional,
+      _.nombre,
+      _.email,
+      _.direccion,
+      _.lat,
+      _.long,
+      _.referencia,
       _.pass,
-      token,
-      _.latitud,
-      _.longitud
+        token,
+      _.tipo_cliente
     );
 
     if (result != null) {

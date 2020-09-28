@@ -17,6 +17,16 @@ class Product {
 
     return result;
   }
+  
+  async todosMercados() {
+    console.log(arguments);
+    let query = `select * from mercados`;
+    let params = [];
+    let result = await db.query(query, params);
+
+    return result;
+  }
+
   async categoriasxmercado(id_mercado) {
     console.log(arguments);
     let query = `select t1.id,t1.nombre from categorias as t1 inner JOIN detalle_mercado as t2 on t1.id=t2.id_categoria INNER JOIN mercados as t3 on t2.id_mercado=t3.id where t3.id=?`;

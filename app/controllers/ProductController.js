@@ -4,6 +4,20 @@ const util = require("./../../utils/util");
 
 class ProductController {
 
+  async todosMercados(req,res){
+    let _ = req.body;
+    let result = await Product.validar_token(_.token);
+    if ((result.data = _.token)) {
+      let resultado = await Product.todosMercados();
+      if (resultado.length > 0) {
+        res.send({ success: true, message: "succesfully !!", data: resultado });
+      } else {
+        res.send({ success: false, message: "bad request !!" });
+      }
+    } else {
+      res.send({ success: false, message: "bad request !!" });
+    }
+  }
   async categoriasxmercado(req,res){
     let _ = req.body;
     let result = await Product.validar_token(_.token);

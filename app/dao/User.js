@@ -36,31 +36,27 @@ class User {
     return result;
   }
   async registroUsuario(
-    nombres,
-    apellidos,
-    correo,
-    genero,
-    telefono,
-    fecha_nacimiento,
-    correo_opcional,
+    nombre,
+    email,
+    direccion,
+    lat,
+    long,
+    referencia,
     pass,
     token,
-    latitud,
-    longitud
+    tipo_cliente
   ) {
-    let query = `insert into clientes(nombres,apellidos,correo,genero,telefono,fecha_nacimiento,correo_opcional,pass,token,latitud,longitud) values(?,?,?,?,?,?,?,?,?,?,?)`;
+    let query = `insert into clientes(nombre,email,direccion,lat,lon,referencia,pass,token,tipo_cliente)values(?,?,?,?,?,?,?,?,?)`;
     let params = [
-      nombres,
-      apellidos,
-      correo,
-      genero,
-      telefono,
-      fecha_nacimiento,
-      correo_opcional,
+      nombre,
+      email,
+      direccion,
+      lat,
+      long,
+      referencia,
       pass,
       token,
-      latitud,
-      longitud
+      tipo_cliente
     ];
     let result = await db.query(query, params);
 

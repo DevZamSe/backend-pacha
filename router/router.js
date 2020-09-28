@@ -13,6 +13,7 @@ router.post("/user/registroUsuario", UserController.registroUsuario);
 //router.post("/user/changuePass", UserController.changuePass);
 
 // Product Routes
+router.post("/mercados", ProductController.todosMercados);
 router.post("/mercado/categorias", ProductController.categoriasxmercado);
 router.post("/product/detalleProducto", ProductController.detalleProducto);
 router.post("/categorias/caseros", ProductController.caserosxcategoria);
