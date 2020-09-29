@@ -62,6 +62,21 @@ class User {
 
     return result;
   }
+  async validar_token(token) {
+    console.log(arguments);
+    let query = `select token from clientes where token = ?`;
+    let params = [token];
+    let result = await db.query(query, params);
+
+    return result;
+  }
+  async datos(token){
+    let query = `select id,token,nombre,email,direccion,lat,lon,tipo_cliente,referencia from clientes where token = ?`;
+    let params = [token];
+    let result = await db.query(query, params);
+
+    return result;
+  }
 }
 
 module.exports = new User();

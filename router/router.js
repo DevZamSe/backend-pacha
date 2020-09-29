@@ -10,6 +10,7 @@ router.get("/healthcheck", (req, res) => {
 });
 router.post("/user/login", UserController.login);
 router.post("/user/registroUsuario", UserController.registroUsuario);
+router.post("/user/datos", UserController.datos);
 //router.post("/user/changuePass", UserController.changuePass);
 
 // Product Routes

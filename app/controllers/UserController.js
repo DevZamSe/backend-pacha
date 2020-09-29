@@ -1,6 +1,7 @@
 const User = require("./../dao/User");
 const util = require("./../../utils/util");
 
+
 class UserController {
   async login(req, res) {
     let _ = req.body;
@@ -31,33 +32,22 @@ class UserController {
     );
 
     if (result != null) {
-      res.send({ success: true, message: "succesfully!!" });
+      res.send({ success: true, message: "succesfully!!",data:[{token}] });
     } else {
       res.send({ success: false, message: "Bad request !!" });
     }
   }
-  async validarActualizar(req, res) {
-    let _ = req.body;
-
-    let result = await User.validarToken(_.token);
-    let token = util.generateToken();
-
-    if (result.length > 0) {
-      if (result[0].token == _.token) {
-        let user = result[0];
-        user.token = token;
-
-        console.log("token", token);
-        console.log(user);
-        console.log(result[0]);
-
-        await User.updateTokenUser(user.id_cliente, token);
-        res.send({ success: true, message: "Successfully !!", data: user });
-      }
-    } else {
-      res.send({ success: false, message: "Invalid User" });
-    }
+ async datos(req,res){
+  let _ = req.body;
+  let result = await User.validar_token(_.token);
+  if ((result.data = _.token)) {
+    let resultado = await User.datos(_.token);
+   
+      res.send({ success: true, message: "succesfully !!", data: resultado });
+  } else {
+    res.send({ success: false, message: "bad request !!" });
   }
+ }
 }
 
 module.exports = new UserController();
