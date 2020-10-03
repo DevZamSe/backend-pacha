@@ -35,10 +35,10 @@ class Product {
 
     return result;
   }
-  async caserosxcategoria(id_categoria){
+  async caserosxcategoria(id_categoria,id_mercado){
   
-    let query = `select t1.id,t1.nombre,t1.img from caseros as t1 INNER JOIN puestos as t2 on t1.id=t2.casero INNER JOIN categorias as t3 on t2.id_categoria=t3.id where t3.id=?`;
-    let params = [id_categoria];
+    let query = `select t1.id,t1.nombre,t1.img from caseros as t1 INNER JOIN puestos as t2 on t1.id=t2.casero INNER JOIN mercados as t3 on t2.mercado=t3.id INNER JOIN detalle_mercado as t4 on t3.id=t4.id_mercado INNER join categorias as t5 on t4.id_categoria=t5.id where t5.id=? and t3.id=?`;
+    let params = [id_categoria,id_mercado];
     let result = await db.query(query, params);
 
     return result;

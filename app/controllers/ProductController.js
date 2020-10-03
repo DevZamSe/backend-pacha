@@ -36,7 +36,7 @@ async caserosxcategoria(req,res){
   let _ = req.body;
     let result = await Product.validar_token(_.token);
     if ((result.data = _.token)) {
-      let resultado = await Product.caserosxcategoria(_.id_categoria);
+      let resultado = await Product.caserosxcategoria(_.id_categoria,_.id_mercado);
       if (resultado.length > 0) {
         res.send({ success: true, message: "succesfully !!", data: resultado });
       } else {
