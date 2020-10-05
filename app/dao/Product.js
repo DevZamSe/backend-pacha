@@ -9,6 +9,22 @@ class Product {
 
   //         return result;
   //     }
+
+  async personasActual(ingreso,salida,id_mercado){
+    let query = `update mercados set cola=?, actual=? where id=?`;
+    let params = [ingreso,salida,id_mercado];
+    let result = await db.query(query, params);
+
+    return result;
+  }
+  async cantidadExacta(id_mercado){
+
+    let query = `select cola,actual from mercados where id = ?`;
+    let params = [id_mercado];
+    let result = await db.query(query, params);
+
+    return result;
+  }
   async validar_token(token) {
     console.log(arguments);
     let query = `select token from clientes where token = ?`;
@@ -110,6 +126,13 @@ class Product {
   async encontrarlista(token){
     let query = `select id from clientes where token=?`;
     let params = [token];
+    let result = await db.query(query, params);
+
+    return result;
+  }
+  async mislistas(tipo_lista,id){
+    let query = `select * from listas where id_tipo=? and cliente=?`;
+    let params = [tipo_lista,id];
     let result = await db.query(query, params);
 
     return result;

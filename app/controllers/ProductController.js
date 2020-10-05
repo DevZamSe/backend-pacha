@@ -4,6 +4,25 @@ const util = require("./../../utils/util");
 
 class ProductController {
 
+  async personasActual(req,res){
+    let _ = req.body;
+    let result = await Product.validar_token(_.token);
+    if ((result.data = _.token)) {
+
+      let [{cola,actual}] = await Product.cantidadExacta(_.id_mercado);
+      console.log(cola);
+      console.log(actual);
+
+      let ingreso=cola+_.ingreso;
+      let salida=actual+_.salida;
+      await Product.personasActual(ingreso,salida,_.id_mercado);
+
+        res.send({ success: true, message: "succesfully !!" });
+     
+    } else {
+      res.send({ success: false, message: "bad request !!" });
+    }
+  }
   async todosMercados(req,res){
     let _ = req.body;
     let result = await Product.validar_token(_.token);
@@ -124,6 +143,22 @@ async caserosxcategoria(req,res){
       }
     } else {
       res.status(500).send({ success: false, message: "bad request !!" });
+    }
+  }
+  async mislistas(req, res){
+    let _ = req.body;
+    let result = await Product.validar_token(_.token);
+
+    if ((result.data = _.token)) {
+      let [{id}] = await Product.encontrarid(_.token);
+      let resultado = await Product.mislistas(_.tipo_lista,id);
+      if (resultado.length > 0) {
+        res.send({ success: true, message: "succesfully !!", data: resultado });
+      } else {
+        res.send({ success: false, message: "bad request !!" });
+      }
+    } else {
+      res.send({ success: false, message: "bad request !!" });
     }
   }
 }
