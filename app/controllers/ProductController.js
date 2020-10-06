@@ -165,8 +165,8 @@ async caserosxcategoria(req,res){
     let result = await Product.validar_token(_.token);
 
     if ((result.length > 0)) {
-      
-      let resultado = await Product.misproductosxlista(_.id_lista);
+      let [{id}] = await Product.encontrarid(_.token);
+      let resultado = await Product.misproductosxlista(_.id_lista,id);
       if (resultado.length > 0) {
         res.send({ success: true, message: "succesfully !!", data: resultado });
       } else {
