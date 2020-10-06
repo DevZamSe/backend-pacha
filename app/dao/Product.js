@@ -137,6 +137,13 @@ class Product {
 
     return result;
   }
+  async misproductosxlista(id_lista){
+    let query = `select * from listas as t1 INNER JOIN detalle_lista as t2 on t1.id=t2.id_lista INNER JOIN prepedido as t3 on t2.id_prepedido=t3.id_prepedido INNER JOIN productos as t4 on t3.id_producto=t4.id where t1.id=?`;
+    let params = [id_lista];
+    let result = await db.query(query, params);
+
+    return result;
+  }
   
 }
 

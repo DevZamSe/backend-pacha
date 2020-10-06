@@ -7,7 +7,7 @@ class ProductController {
   async personasActual(req,res){
     let _ = req.body;
     let result = await Product.validar_token(_.token);
-    if ((result.data = _.token)) {
+    if ((result.length > 0)) {
 
       let [{cola,actual}] = await Product.cantidadExacta(_.id_mercado);
       console.log(cola);
@@ -26,21 +26,20 @@ class ProductController {
   async todosMercados(req,res){
     let _ = req.body;
     let result = await Product.validar_token(_.token);
-    if ((result.data = _.token)) {
-      let resultado = await Product.todosMercados();
-      if (resultado.length > 0) {
+  
+      if (result.length > 0) {
+        let resultado = await Product.todosMercados();
+
         res.send({ success: true, message: "succesfully !!", data: resultado });
       } else {
         res.send({ success: false, message: "bad request !!" });
       }
-    } else {
-      res.send({ success: false, message: "bad request !!" });
-    }
+    
   }
   async categoriasxmercado(req,res){
     let _ = req.body;
     let result = await Product.validar_token(_.token);
-    if ((result.data = _.token)) {
+    if ((result.length > 0)) {
       let resultado = await Product.categoriasxmercado(_.id_mercado);
       if (resultado.length > 0) {
         res.send({ success: true, message: "succesfully !!", data: resultado });
@@ -54,7 +53,7 @@ class ProductController {
 async caserosxcategoria(req,res){
   let _ = req.body;
     let result = await Product.validar_token(_.token);
-    if ((result.data = _.token)) {
+    if ((result.length > 0)) {
       let resultado = await Product.caserosxcategoria(_.id_mercado);
       if (resultado.length > 0) {
         res.send({ success: true, message: "succesfully !!", data: resultado });
@@ -69,7 +68,7 @@ async caserosxcategoria(req,res){
     let _ = req.body;
     let result = await Product.validar_token(_.token);
 
-    if ((result.data = _.token)) {
+    if ((result.length > 0)) {
       let resultado = await Product.productosxpuesto(_.id_casero);
       if (resultado.length > 0) {
         res.send({ success: true, message: "succesfully !!", data: resultado });
@@ -84,7 +83,7 @@ async caserosxcategoria(req,res){
     let _ = req.body;
     let result = await Product.validar_token(_.token);
 
-    if ((result.data = _.token)) {
+    if ((result.length > 0)) {
       let resultado = await Product.detalleProducto(_.id_producto);
       if (resultado.length > 0) {
         res.send({ success: true, message: "succesfully !!", data: resultado });
@@ -99,7 +98,7 @@ async caserosxcategoria(req,res){
     let _ = req.body;
     let result = await Product.validar_token(_.token);
 
-    if ((result.data = _.token)) {
+    if ((result.length > 0)) {
       let [{id}]=await Product.encontrarid(_.token);
        await Product.agregarlista(id,_.tipo);
      
@@ -113,7 +112,7 @@ async caserosxcategoria(req,res){
     let _ = req.body;
     let result = await Product.validar_token(_.token);
 
-    if ((result.data = _.token)) {
+    if ((result.length > 0)) {
       await Product.agregarprepedido(_.id_producto,_.cantidad,_.precio);
       let [{id_prepedido}]=await Product.findippre(_.id_producto,_.cantidad,_.precio);
       console.log(id_prepedido);
@@ -131,7 +130,7 @@ async caserosxcategoria(req,res){
     let _= req.body;
     let result = await Product.validar_token(_.token);
 
-    if ((result.data = _.token)) {
+    if ((result.length > 0)) {
       let [{id}] = await Product.encontrarid(_.token);
      
       if(_.estado == 1) {
@@ -149,9 +148,25 @@ async caserosxcategoria(req,res){
     let _ = req.body;
     let result = await Product.validar_token(_.token);
 
-    if ((result.data = _.token)) {
+    if ((result.length > 0)) {
       let [{id}] = await Product.encontrarid(_.token);
       let resultado = await Product.mislistas(_.tipo_lista,id);
+      if (resultado.length > 0) {
+        res.send({ success: true, message: "succesfully !!", data: resultado });
+      } else {
+        res.send({ success: false, message: "bad request !!" });
+      }
+    } else {
+      res.send({ success: false, message: "bad request !!" });
+    }
+  }
+  async misproductosxlista(req,res){
+    let _ = req.body;
+    let result = await Product.validar_token(_.token);
+
+    if ((result.length > 0)) {
+      
+      let resultado = await Product.misproductosxlista(_.id_lista);
       if (resultado.length > 0) {
         res.send({ success: true, message: "succesfully !!", data: resultado });
       } else {

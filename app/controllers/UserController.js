@@ -40,7 +40,7 @@ class UserController {
  async datos(req,res){
   let _ = req.body;
   let result = await User.validar_token(_.token);
-  if ((result.data = _.token)) {
+  if ((result.length > 0)) {
     let resultado = await User.datos(_.token);
    
       res.send({ success: true, message: "succesfully !!", data: resultado });

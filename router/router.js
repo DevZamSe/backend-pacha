@@ -24,6 +24,7 @@ router.post("/product/agregarlista", ProductController.agregarlista);
 router.post("/product/agregaralista", ProductController.agregaralista);
 router.post("/product/agregarFavorito", ProductController.agregarFavorito);
 router.post("/mercado/misListas", ProductController.mislistas);
+router.post("/listas/misproductos", ProductController.misproductosxlista);
 //router.post("/mercado/misRecetas", ProductController.misrecetas);
 
 module.exports = router;
