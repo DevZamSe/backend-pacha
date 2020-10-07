@@ -93,18 +93,26 @@ class Product {
     let params = [id_cliente, id_producto]
     let result = await db.query(query, params)
 
-    return result
+    return result;
   }
-  async agregarlista(id,tipo){
-    let query = `insert into listas(cliente,id_tipo) values(?,?)`;
-    let params = [id,tipo];
+  async agregarlista(id,texto){
+    let query = `insert into listas(cliente,titulo) values(?,?)`;
+    let params = [id,texto];
     let result = await db.query(query, params);
 
     return result;
   }
-  async agregarprepedido(id_producto,cantidad,precio){
-    let query = `insert into prepedido(id_producto,cantidad,precio) values(?,?,?)`;
-    let params = [id_producto,cantidad,precio];
+ 
+  async cantidadLista(id){
+    let query=`SELECT * FROM listas where cliente=?`;
+    let params = [id];
+    let result = await db.query(query, params);
+
+    return result;
+  }
+  async agregarprepedido(id_producto,cantidad,id_cliente){
+    let query = `insert into prepedido(id_producto,cantidad,id_cliente) values(?,?,?)`;
+    let params = [id_producto,cantidad,id_cliente];
     let result = await db.query(query, params);
 
     return result;
@@ -116,20 +124,14 @@ class Product {
 
     return result;
   }
-  async findippre(id_producto,cantidad,precio){
-    let query = `select id_prepedido from prepedido where id_producto=? and cantidad=? and precio=?`;
-    let params = [id_producto,cantidad,precio];
+  async findippre(id_producto,cantidad){
+    let query = `select id_prepedido from prepedido where id_producto=? and cantidad=?`;
+    let params = [id_producto,cantidad];
     let result = await db.query(query, params);
 
     return result;
   }
-  async encontrarlista(token){
-    let query = `select id from clientes where token=?`;
-    let params = [token];
-    let result = await db.query(query, params);
-
-    return result;
-  }
+  
   async mislistas(tipo_lista,id){
     let query = `select * from listas where id_tipo=? and cliente=?`;
     let params = [tipo_lista,id];

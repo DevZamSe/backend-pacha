@@ -100,7 +100,21 @@ async caserosxcategoria(req,res){
 
     if ((result.length > 0)) {
       let [{id}]=await Product.encontrarid(_.token);
-       await Product.agregarlista(id,_.tipo);
+       await Product.agregarlista(id);
+
+        res.send({ success: true, message: "succesfully !!" });
+     
+    } else {
+      res.send({ success: false, message: "bad request !!" });
+    }
+  }
+  async agregarcantidad(req,res){
+    let _ = req.body;
+    let result = await Product.validar_token(_.token);
+
+    if ((result.length > 0)) {
+
+      await Product.agregarprepedido(_.id_producto,_.cantidad,_.id_cliente);
      
         res.send({ success: true, message: "succesfully !!" });
      
@@ -111,14 +125,22 @@ async caserosxcategoria(req,res){
   async agregaralista(req,res){
     let _ = req.body;
     let result = await Product.validar_token(_.token);
-
+    var idspedido=[];    
     if ((result.length > 0)) {
-      await Product.agregarprepedido(_.id_producto,_.cantidad,_.precio);
-      let [{id_prepedido}]=await Product.findippre(_.id_producto,_.cantidad,_.precio);
-      console.log(id_prepedido);
-      let [{id_lista}]=await Product.encontrarlista(_.token);
-      await Product.agregaralista(id_lista,id_prepedido);
-      
+       let [{id}]=await Product.encontrarid(_.token);
+     
+       let datos=_.datos;
+       let cuenta= await Product.cantidadLista(id);
+       let texto=`Lista de compras ${cuenta.length+1}`;
+       let {insertId}=await Product.agregarlista(id,texto);
+       let id_lista=insertId;  
+       for (const element of datos) {
+        let {insertId}=await Product.agregarprepedido(element['id'],element['aniadido'],id);
+         idspedido.push(insertId);
+         await Product.agregaralista(id_lista,insertId);
+       }
+       console.log(idspedido);
+
         res.send({ success: true, message: "succesfully !!" });
       
     } else {
