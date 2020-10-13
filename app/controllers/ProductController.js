@@ -108,20 +108,7 @@ async caserosxcategoria(req,res){
       res.send({ success: false, message: "bad request !!" });
     }
   }
-  async agregarcantidad(req,res){
-    let _ = req.body;
-    let result = await Product.validar_token(_.token);
-
-    if ((result.length > 0)) {
-
-      await Product.agregarprepedido(_.id_producto,_.cantidad,_.id_cliente);
-     
-        res.send({ success: true, message: "succesfully !!" });
-     
-    } else {
-      res.send({ success: false, message: "bad request !!" });
-    }
-  }
+  
   async agregaralista(req,res){
     let _ = req.body;
     let result = await Product.validar_token(_.token);
@@ -147,6 +134,39 @@ async caserosxcategoria(req,res){
       res.send({ success: false, message: "bad request !!" });
     }
   }
+  async updatealista(req,res){
+    let _ = req.body;
+    let result = await Product.validar_token(_.token);
+   
+    if ((result.length > 0)) {
+      let [{id}]=await Product.encontrarid(_.token);
+       let datos=_.datos;
+       for (const element of datos) {
+        await Product.updatelistas(element['titulo'],element['id'],id);
+       }
+        res.send({ success: true, message: "succesfully !!" });
+      
+    } else {
+      res.send({ success: false, message: "bad request !!" });
+    }
+  }
+  async deleteproductoslista(req,res){
+    let _ = req.body;
+    let result = await Product.validar_token(_.token);
+   
+    if ((result.length > 0)) {
+     
+      await Product.deleteproductoslista(_.id_lista,_.id_prepedido);
+      await Product.deleteprepedidolista(_.id_prepedido);
+
+
+        res.send({ success: true, message: "succesfully !!" });
+      
+    } else {
+      res.send({ success: false, message: "bad request !!" });
+    }
+  }
+
  
   async agregarFavorito(req, res){
     let _= req.body;
@@ -172,7 +192,7 @@ async caserosxcategoria(req,res){
 
     if ((result.length > 0)) {
       let [{id}] = await Product.encontrarid(_.token);
-      let resultado = await Product.mislistas(_.tipo_lista,id);
+      let resultado = await Product.mislistas(id);
       if (resultado.length > 0) {
         res.send({ success: true, message: "succesfully !!", data: resultado });
       } else {
@@ -194,6 +214,90 @@ async caserosxcategoria(req,res){
       } else {
         res.send({ success: false, message: "bad request !!" });
       }
+    } else {
+      res.send({ success: false, message: "bad request !!" });
+    }
+  }
+  async categoriasRecetas(req,res){
+    let _ = req.body;
+    let result = await Product.validar_token(_.token);
+
+    if ((result.length > 0)) {
+     
+      let resultado = await Product.categoriasRecetas();
+      if (resultado.length > 0) {
+        res.send({ success: true, message: "succesfully !!", data: resultado });
+      } else {
+        res.send({ success: false, message: "bad request !!" });
+      }
+    } else {
+      res.send({ success: false, message: "bad request !!" });
+    }
+  }
+  async recetas(req,res){
+    let _ = req.body;
+    let result = await Product.validar_token(_.token);
+
+    if ((result.length > 0)) {
+     
+      let resultado = await Product.recetas(_.id_categoria);
+      if (resultado.length > 0) {
+        res.send({ success: true, message: "succesfully !!", data: resultado });
+      } else {
+        res.send({ success: false, message: "bad request !!" });
+      }
+    } else {
+      res.send({ success: false, message: "bad request !!" });
+    }
+  }
+  async detalleReceta(req,res){
+    let _ = req.body;
+    let result = await Product.validar_token(_.token);
+
+    if ((result.length > 0)) {
+     
+      let resultado = await Product.detalleReceta(_.id_receta);
+      if (resultado.length > 0) {
+        res.send({ success: true, message: "succesfully !!", data: resultado });
+      } else {
+        res.send({ success: false, message: "bad request !!" });
+      }
+    } else {
+      res.send({ success: false, message: "bad request !!" });
+    }
+  }
+  async aforo(req,res){
+    let _ = req.body;
+    let result = await Product.validar_token(_.token);
+
+    if ((result.length > 0)) {
+     
+      let resultado = await Product.aforo(_.id_mercado);
+      if (resultado.length > 0) {
+        res.send({ success: true, message: "succesfully !!", data: resultado });
+      } else {
+        res.send({ success: false, message: "bad request !!" });
+      }
+    } else {
+      res.send({ success: false, message: "bad request !!" });
+    }
+  }
+  async eliminarlista(req,res){
+    let _ = req.body;
+    let result = await Product.validar_token(_.token);
+
+    if ((result.length > 0)) {
+     
+      let resultado=await Product.encontrarpre(_.id_lista);
+       await Product.eliminardeDetallelista(_.id_lista);
+      for (const element of resultado) {
+            await Product.eliminarprepedidos(element['id_prepedido']);
+      }
+       await Product.eliminarlista(_.id_lista);
+     
+    
+        res.send({ success: true, message: "succesfully !!"});
+     
     } else {
       res.send({ success: false, message: "bad request !!" });
     }

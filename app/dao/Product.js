@@ -53,7 +53,7 @@ class Product {
   }
   async caserosxcategoria(id_mercado){
   
-    let query = `select t1.id,t1.nombre,t1.img,t5.id as id_categoria,t2.numero from caseros as t1 INNER JOIN puestos as t2 on t1.id=t2.casero INNER JOIN mercados as t3 on t2.mercado=t3.id INNER JOIN detalle_mercado as t4 on t3.id=t4.id_mercado INNER join categorias as t5 on t4.id_categoria=t5.id where  t3.id=?`;
+    let query = `select t1.id,t1.nombre,t1.img,t2.id_categoria,t2.numero from caseros as t1 INNER JOIN puestos as t2 on t1.id=t2.casero INNER JOIN mercados as t3 on t2.mercado=t3.id  where  t3.id=?`;
     let params = [id_mercado];
     let result = await db.query(query, params);
 
@@ -61,7 +61,7 @@ class Product {
   }
   
   async productosxpuesto(id_casero){
-    let query = `SELECT t0.nombre,t1.id,t1.nombre,t1.precio,t1.img,t1.validate,t1.aniadido from categorias as t0 inner join productos as t1 on t0.id=t1.categoria INNER JOIN detalle_producto as t2 on t1.id=t2.id_producto inner join puestos as t3 on t2.id_puesto inner join caseros as t4 on t3.casero=t4.id where t4.id=?`;
+    let query = `SELECT t4.id,t4.nombre,t4.precio,t4.img,t4.validate,t4.aniadido from caseros as t1 INNER JOIN puestos as t2 on t1.id=t2.casero INNER JOIN detalle_producto as t3 on t2.id=t3.id_puesto INNER join productos as t4 on t3.id_producto=t4.id where t1.id=?`;
     let params = [id_casero];
     let result = await db.query(query, params);
 
@@ -102,6 +102,27 @@ class Product {
 
     return result;
   }
+  async updatelistas(titulo,id,id_cliente){
+    let query = `update listas set titulo=? where id=? and cliente=?`;
+    let params = [titulo,id,id_cliente];
+    let result = await db.query(query, params);
+
+    return result;
+  }
+  async deleteproductoslista(id_lista,id_prepedido){
+    let query = `delete from detalle_lista where id_lista=? and id_prepedido=?`;
+    let params = [id_lista,id_prepedido];
+    let result = await db.query(query, params);
+
+    return result;
+  }
+  async deleteprepedidolista(id_prepedido){
+    let query = `delete from prepedido where id_prepedido=?`;
+    let params = [id_prepedido];
+    let result = await db.query(query, params);
+
+    return result;
+  }
  
   async cantidadLista(id){
     let query=`SELECT * FROM listas where cliente=?`;
@@ -132,21 +153,77 @@ class Product {
     return result;
   }
   
-  async mislistas(tipo_lista,id){
-    let query = `select * from listas where id_tipo=? and cliente=?`;
-    let params = [tipo_lista,id];
+  async mislistas(id){
+    let query = `select * from listas where cliente=?`;
+    let params = [id];
     let result = await db.query(query, params);
 
     return result;
   }
   async misproductosxlista(id_lista,id){
-    let query = `select * from listas as t1 INNER JOIN detalle_lista as t2 on t1.id=t2.id_lista INNER JOIN prepedido as t3 on t2.id_prepedido=t3.id_prepedido INNER JOIN productos as t4 on t3.id_producto=t4.id where t1.id=? and t1.cliente=?`;
+    let query = `select t1.id,t1.titulo,t1.fecha,t2.id_prepedido,t3.cantidad,t4.id,t4.nombre,t4.precio,t4.peso from listas as t1 INNER JOIN detalle_lista as t2 on t1.id=t2.id_lista INNER JOIN prepedido as t3 on t2.id_prepedido=t3.id_prepedido INNER JOIN productos as t4 on t3.id_producto=t4.id where t1.id=? and t1.cliente=?`;
     let params = [id_lista,id];
     let result = await db.query(query, params);
 
     return result;
   }
-  
+  async categoriasRecetas(){
+    let query = `select * from categoria_recetas`;
+    let params = [];
+    let result = await db.query(query, params);
+
+    return result;
+  }
+  async recetas(id_categoria){
+    let query = `select * from recetas where categoria=?`;
+    let params = [id_categoria];
+    let result = await db.query(query, params);
+
+    return result;
+  }
+  async detalleReceta(id_receta){
+    let query = `select t1.id,t1.nombre,t1.preparacion,t1.foto,t2.id_prepedido,t3.cantidad,t4.id,t4.nombre,t4.precio,t4.peso from recetas as t1 INNER JOIN detalle_recetas as t2 on t1.id=t2.id_receta INNER JOIN prepedido as t3 on t2.id_prepedido=t3.id_prepedido INNER JOIN productos as t4 on t3.id_producto=t4.id where t1.id=?`;
+    let params = [id_receta];
+    let result = await db.query(query, params);
+
+    return result;
+  }
+  async aforo(id_mercado){
+    let query = `select * from mercados where id=?`;
+    let params = [id_mercado];
+    let result = await db.query(query, params);
+
+    return result;
+  }
+  async encontrarpre(id_lista){
+    let query = `select id_prepedido from detalle_lista where id_lista=?`;
+    let params = [id_lista];
+    let result = await db.query(query, params);
+
+    return result;
+  }
+  async eliminarprepedidos(id_prepedido){
+    let query = `delete from prepedido where id_prepedido=?`;
+    let params = [id_prepedido];
+    let result = await db.query(query, params);
+
+    return result;
+  }
+  async eliminarlista(id_lista){
+    let query = `delete from listas where id=?`;
+    let params = [id_lista];
+    let result = await db.query(query, params);
+
+    return result;
+  }
+  async eliminardeDetallelista(id_lista){
+    let query = `delete from detalle_lista where id_lista=?`;
+    let params = [id_lista];
+    let result = await db.query(query, params);
+
+    return result;
+  }
+
 }
 
 module.exports = new Product();

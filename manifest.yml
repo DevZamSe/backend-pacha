@@ -1,0 +1,4 @@
+applications:
+    - name: backend-pacha
+      memory: 256M
+    
