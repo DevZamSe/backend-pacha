@@ -6,7 +6,8 @@ class ProductController {
 
   async personasActual(req,res){
     let _ = req.body;
-    let result = await Product.validar_token(_.token);
+    //let result = await Product.validar_token(_.token);
+    let result = _.token;
     if ((result.length > 0)) {
 
       let [{cola,actual}] = await Product.cantidadExacta(_.id_mercado);
@@ -54,12 +55,32 @@ async caserosxcategoria(req,res){
   let _ = req.body;
     let result = await Product.validar_token(_.token);
     if ((result.length > 0)) {
-      let resultado = await Product.caserosxcategoria(_.id_mercado);
-      if (resultado.length > 0) {
-        res.send({ success: true, message: "succesfully !!", data: resultado });
+      let [{id}]=await Product.encontrarid(_.token);
+      var resultado;
+      let listafavorito=await Product.listaFavoritosCaseros(_.id_mercado,id);
+      let todos=await Product.caserosxcategoria(_.id_mercado);
+      if (listafavorito!=null) {
+        var array = [];
+        for (var i = 0; i < todos.length; i++) {
+            var igual=false;
+             for (var j = 0; j < listafavorito.length & !igual; j++) {
+                 if(todos[i]['id'] == listafavorito[j]['id']) 
+                         igual=true;
+             }
+            if(!igual)array.push(todos[i]); 
+        }
+        for (const element of array) {
+          let a={
+            estado:0
+          }
+          Object.assign(element,a)
+        }
+        resultado=array.concat(listafavorito);   
       } else {
-        res.send({ success: false, message: "bad request !!" });
+        resultado = todos;
       }
+     
+        res.send({ success: true, message: "succesfully !!", data: resultado });
     } else {
       res.send({ success: false, message: "bad request !!" });
     }
@@ -67,14 +88,56 @@ async caserosxcategoria(req,res){
   async productosxpuesto(req,res){
     let _ = req.body;
     let result = await Product.validar_token(_.token);
+    
+    if ((result.length > 0)) {
+      let [{id}]=await Product.encontrarid(_.token);
+      var resultado;
+      let todo=await Product.productosxpuesto(_.id_casero);
+      let favoritos= await Product.listafavoritosProductos(id,_.id_casero);
+     
+      if (favoritos!=null) {
+        var array = [];
+        for (var i = 0; i < todo.length; i++) {
+            var igual=false;
+             for (var j = 0; j < favoritos.length & !igual; j++) {
+                 if(todo[i]['id'] == favoritos[j]['id']) 
+                         igual=true;
+             }
+            if(!igual)array.push(todo[i]); 
+        }
+        for (const element of array) {
+          let a={
+            estado:0
+          }
+          Object.assign(element,a)
+        }
+        resultado=array.concat(favoritos);   
+      } else {
+        
+        resultado =todo; 
+      }
+
+        res.send({ success: true, message: "succesfully !!", data: resultado });
+    
+    } else {
+      res.send({ success: false, message: "bad request !!" });
+    }
+  }
+  async agregarFavoritoProducto(req,res){
+    let _ = req.body;
+    let result = await Product.validar_token(_.token);
 
     if ((result.length > 0)) {
-      let resultado = await Product.productosxpuesto(_.id_casero);
-      if (resultado.length > 0) {
-        res.send({ success: true, message: "succesfully !!", data: resultado });
+     let [{id}]=await Product.encontrarid(_.token);
+      if (_.estado==1) {
+        await Product.agregarFavoritoProducto(_.id_producto,id);
       } else {
-        res.send({ success: false, message: "bad request !!" });
+        if (_.estado==0) {
+          await Product.eliminarFavoritoProducto(_.id_producto,id); 
+        }
       }
+      
+      res.send({ success: true, message: "succesfully !!" });
     } else {
       res.send({ success: false, message: "bad request !!" });
     }
@@ -94,20 +157,20 @@ async caserosxcategoria(req,res){
       res.send({ success: false, message: "bad request !!" });
     }
   }
-  async agregarlista(req,res){
-    let _ = req.body;
-    let result = await Product.validar_token(_.token);
+  // async agregarlista(req,res){
+  //   let _ = req.body;
+  //   let result = await Product.validar_token(_.token);
 
-    if ((result.length > 0)) {
-      let [{id}]=await Product.encontrarid(_.token);
-       await Product.agregarlista(id);
+  //   if ((result.length > 0)) {
+  //     let [{id}]=await Product.encontrarid(_.token);
+  //      await Product.agregarlista(id);
 
-        res.send({ success: true, message: "succesfully !!" });
+  //       res.send({ success: true, message: "succesfully !!" });
      
-    } else {
-      res.send({ success: false, message: "bad request !!" });
-    }
-  }
+  //   } else {
+  //     res.send({ success: false, message: "bad request !!" });
+  //   }
+  // }
   
   async agregaralista(req,res){
     let _ = req.body;
@@ -115,14 +178,17 @@ async caserosxcategoria(req,res){
     var idspedido=[];    
     if ((result.length > 0)) {
        let [{id}]=await Product.encontrarid(_.token);
-     
+       
        let datos=_.datos;
        let cuenta= await Product.cantidadLista(id);
        let texto=`Lista de compras ${cuenta.length+1}`;
-       let {insertId}=await Product.agregarlista(id,texto);
+       let [{id_puesto}]= await Product.idPuestobyCaasero(_.id_casero)
+       console.log(id_puesto);
+       let {insertId}=await Product.agregarlista(id,texto,id_puesto);
        let id_lista=insertId;  
+       console.log(id_lista);
        for (const element of datos) {
-        let {insertId}=await Product.agregarprepedido(element['id'],element['aniadido'],id);
+        let {insertId}=await Product.agregarprepedido(element['id'],element['cantidad'],id);
          idspedido.push(insertId);
          await Product.agregaralista(id_lista,insertId);
        }
@@ -168,7 +234,7 @@ async caserosxcategoria(req,res){
   }
 
  
-  async agregarFavorito(req, res){
+  async agregarFavoritoCasero(req, res){
     let _= req.body;
     let result = await Product.validar_token(_.token);
 
@@ -176,14 +242,14 @@ async caserosxcategoria(req,res){
       let [{id}] = await Product.encontrarid(_.token);
      
       if(_.estado == 1) {
-        await Product.agregarFavorito(_.id_producto, id,_.estado)
+        await Product.agregarFavoritoCasero(_.id_casero, id,_.estado)
         res.send({ success: true, message: "succesfully !!"});
       } else {
-        await Product.eliminarFavorito(id,_.id_producto)
+        await Product.eliminarFavoritoCasero(id,_.id_casero)
         res.send({ success: true, message: "succesfully !!" });
       }
     } else {
-      res.status(500).send({ success: false, message: "bad request !!" });
+      res.send({ success: false, message: "bad request !!" });
     }
   }
   async mislistas(req, res){

@@ -51,9 +51,17 @@ class Product {
 
     return result;
   }
+  async listaFavoritosCaseros(id_mercado,id){
+    console.log(arguments);
+    let query = `SELECT DISTINCT t2.id,t2.nombre,t2.img,t3.numero,t4.id_categoria,t1.estado from favoritos_puesto as t1 INNER JOIN caseros as t2 on t1.id_casero=t2.id INNER JOIN puestos as t3 on t2.id=t3.casero INNER JOIN puesto_categorias as t4 on t3.id=t4.id_puesto INNER JOIN categorias as t5 on t4.id_categoria=t5.id INNER JOIN detalle_mercado as t6 on t5.id=t6.id_categoria where t6.id_mercado=? and  t1.id_cliente=?`;
+    let params = [id_mercado,id];
+    let result = await db.query(query, params);
+
+    return result;
+  }
   async caserosxcategoria(id_mercado){
   
-    let query = `select t1.id,t1.nombre,t1.img,t2.id_categoria,t2.numero from caseros as t1 INNER JOIN puestos as t2 on t1.id=t2.casero INNER JOIN mercados as t3 on t2.mercado=t3.id  where  t3.id=?`;
+    let query = `select t1.id,t1.nombre,t1.img,t2.numero,t3.id_categoria from caseros as t1 INNER JOIN puestos as t2 on t1.id=t2.casero INNER JOIN puesto_categorias as t3 on t2.id=t3.id_puesto INNER JOIN categorias as t4 on t3.id_categoria=t4.id INNER JOIN detalle_mercado as t5 on t4.id=t5.id_categoria where t5.id_mercado=?`;
     let params = [id_mercado];
     let result = await db.query(query, params);
 
@@ -61,8 +69,28 @@ class Product {
   }
   
   async productosxpuesto(id_casero){
-    let query = `SELECT t4.id,t4.nombre,t4.precio,t4.img,t4.validate,t4.aniadido from caseros as t1 INNER JOIN puestos as t2 on t1.id=t2.casero INNER JOIN detalle_producto as t3 on t2.id=t3.id_puesto INNER join productos as t4 on t3.id_producto=t4.id where t1.id=?`;
+    let query = `SELECT t4.id,t4.nombre,t3.precio,t4.img from puestos as t1 INNER JOIN almacen as t2 on t1.id=t2.id_puesto INNER JOIN detalle_almacen as t3 on t2.id_almacen=t3.id_almacen INNER JOIN productos as t4 on t3.id_producto=t4.id where t1.casero=?`;
     let params = [id_casero];
+    let result = await db.query(query, params);
+
+    return result;
+  }
+  async listafavoritosProductos(id_cliente,casero){
+    let query = `SELECT DISTINCT t2.id,t2.nombre,t3.precio,t2.img,t1.estado from favoritos as t1 INNER join productos as t2 on t1.id_producto=t2.id INNER JOIN detalle_almacen as t3 on t2.id=t3.id_producto INNER JOIN almacen as t4 on t3.id_almacen=t4.id_almacen INNER join puestos as t5 on t4.id_puesto=t5.id where t1.id_cliente=? and t5.casero=?`;
+    let params = [id_cliente,casero];
+    let result = await db.query(query, params);
+
+    return result;
+  }
+  async agregarFavoritoProducto(id_producto,id_cliente){
+    let query = `insert into favoritos(id_producto,id_cliente,estado) values (?,?,1)`;
+    let params = [id_producto,id_cliente];
+    let result = await db.query(query, params);
+
+    return result;
+  }async eliminarFavoritoProducto(id_producto,id_cliente){
+    let query = `delete from favoritos where id_producto=? and id_cliente=?`;
+    let params = [id_producto,id_cliente];
     let result = await db.query(query, params);
 
     return result;
@@ -81,23 +109,37 @@ class Product {
 
     return result;
   }
-  async agregarFavorito(id_producto, id_cliente, estado){
-    let query = `insert into favoritos(id_cliente,id_producto,estado) values(?,?,?)`;
-    let params = [id_cliente, id_producto, estado]
+  // async encontraridpuesto(id){
+  //   let query = `select id from clientes where token=?`;
+  //   let params = [token];
+  //   let result = await db.query(query, params);
+
+  //   return result;
+  // }
+  async agregarFavoritoCasero(id_casero, id_cliente, estado){
+    let query = `insert into favoritos_puesto(id_casero,id_cliente,estado) values(?,?,?)`;
+    let params = [id_casero,id_cliente, estado]
     let result = await db.query(query, params)
 
     return result
   }
-  async eliminarFavorito(id_cliente, id_producto){
-    let query = `delete from favoritos where id_cliente=? and id_producto=?`
-    let params = [id_cliente, id_producto]
+  async eliminarFavoritoCasero(id_cliente, id_casero){
+    let query = `delete from favoritos_puesto where id_cliente=? and id_casero=?`
+    let params = [id_cliente, id_casero]
     let result = await db.query(query, params)
 
     return result;
   }
-  async agregarlista(id,texto){
-    let query = `insert into listas(cliente,titulo) values(?,?)`;
-    let params = [id,texto];
+  async idPuestobyCaasero(id_casero){
+    let query = `select id as id_puesto from puestos where casero=?`
+    let params = [id_casero]
+    let result = await db.query(query, params)
+
+    return result;
+  }
+  async agregarlista(id,texto,id_puesto){
+    let query = `insert into listas(cliente,titulo,id_puesto) values(?,?,?)`;
+    let params = [id,texto,id_puesto];
     let result = await db.query(query, params);
 
     return result;

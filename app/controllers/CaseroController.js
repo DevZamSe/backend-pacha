@@ -26,24 +26,29 @@ class CaseroController {
         _.lat,
         _.long,
         _.ruc,
-        token
+        token,
+        _.nombre
       );
       let id= result['insertId'];
       
-      let resultado=await Casero.registroPuesto(_.puesto,_.empresa,_.id_mercado,id,_.id_categoria);
+      let resultado=await Casero.registroPuesto(_.puesto,_.empresa,_.id_mercado,id);
       let id_puesto=resultado['insertId'];
-     
+      let datos=_.datos;
+      for (const element of datos) {
+        await Casero.insertpuestoCategoria(element['id_categoria'],id_puesto);
+      }
+      await Casero.crearAlmacen(id_puesto);  
       if (result != null) {
         res.send({ success: true, message: "succesfully!!",data:[{ token,id_puesto }] });
       } else {
         res.send({ success: false, message: "Bad request !!" });
       }
     }
-   async datos(req,res){
+   async datosCasero(req,res){
     let _ = req.body;
     let result = await Casero.validar_token(_.token);
     if ((result.length > 0)) {
-      let resultado = await User.datos(_.token);
+      let resultado = await Casero.datos(_.token);
      
         res.send({ success: true, message: "succesfully !!", data: resultado });
     } else {

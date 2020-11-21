@@ -23,12 +23,13 @@ router.post("/product/detalleProducto", ProductController.detalleProducto);
 router.post("/mercado/aforo", ProductController.aforo);
 router.post("/categorias/caseros", ProductController.caserosxcategoria);
 router.post("/product/productosxpuesto", ProductController.productosxpuesto);
-router.post("/product/agregarlista", ProductController.agregarlista);
+router.post("/product/agregarFavoritoProducto", ProductController.agregarFavoritoProducto);
+//router.post("/product/agregarlista", ProductController.agregarlista);
 router.post("/product/eliminarlista", ProductController.eliminarlista);
 router.post("/product/agregaralista", ProductController.agregaralista);
 router.post("/product/updatealista", ProductController.updatealista);
 router.post("/product/deleteproductoslista", ProductController.deleteproductoslista);
-router.post("/product/agregarFavorito", ProductController.agregarFavorito);
+router.post("/product/agregarFavoritoCasero", ProductController.agregarFavoritoCasero);
 router.post("/mercado/misListas", ProductController.mislistas);
 router.post("/listas/misproductos", ProductController.misproductosxlista);
 router.post("/recetas/categorias", ProductController.categoriasRecetas);
@@ -40,19 +41,42 @@ router.post("/recetas/detalleReceta", ProductController.detalleReceta);
 
 // COMERCAINTES Routes
 router.post("/casero/insertarCasero", CaseroController.registroCasero);
-router.post("/mercados/listaMercados", CaseroController.mercados);
+router.post("/casero/datos", CaseroController.datosCasero);
+router.post("/mercados/publico", CaseroController.mercados);
 
 
 
-router.post("/puesto/update", ProductCaseroController.actualizarpuesto);
+
 router.post("/casero/perfil", ProductCaseroController.perfilCasero);
+router.post("/casero/updateApodo", ProductCaseroController.updateApodo);
+
+router.post("/Miempresa/datos", ProductCaseroController.datosmiempresa);
+router.post("/Miempresa/update", ProductCaseroController.actualizarpuesto);
 
 
 router.post("/categoria/listaCategorias", ProductCaseroController.listaCategorias);
 router.post("/categoria/productosPedido", ProductCaseroController.productosxcategoria);
+
+
+router.post("/abastecimiento/categorias", ProductCaseroController.abastecimientoCategorias);
+router.post("/abastecimiento/Productos", ProductCaseroController.listaProductos);
+
+
+//router.post("/productos/abastecimiento", ProductCaseroController.abastecimiento);
+router.post("/abastecimiento/guardarenAlmacen", ProductCaseroController.abastecimientoProduct);
+
+
+//almacen
 router.post("/almacen/milistaProductos", ProductCaseroController.milistaProductos);
-router.post("/productos/abastecimiento", ProductCaseroController.abastecimiento);
-router.post("/puesto/pedididos", ProductCaseroController.pedidosxid);
+router.post("/almacen/updateprecio", ProductCaseroController.updatePrecio);
+router.post("/almacen/eliminarProducto", ProductCaseroController.eliminarProducto);
+
+
+
+router.post("/puesto/pedidos", ProductCaseroController.pedidosxid);
+router.post("/puesto/detallePedido", ProductCaseroController.detallePedido);
+router.post("/puesto/updatePedidos", ProductCaseroController.updatePedidos);
+
 
 
 
