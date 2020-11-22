@@ -7,18 +7,30 @@ class ProductController {
   async personasActual(req,res){
     let _ = req.body;
     //let result = await Product.validar_token(_.token);
-    let result = _.token;
-    if ((result.length > 0)) {
+    let token = '202fef8b-dfe6-4f1d-b667-4d698b9c0585';
+    if (token=_.token) {
 
-      let [{cola,actual}] = await Product.cantidadExacta(_.id_mercado);
+      let [{id}]=await Product.mercadoId(_.nombre_mercado);
+        console.log(id);
+      if (id!=null) {
+      let [{cola,actual}] = await Product.cantidadExacta(id);
       console.log(cola);
       console.log(actual);
 
       let ingreso=cola+_.ingreso;
       let salida=actual+_.salida;
-      await Product.personasActual(ingreso,salida,_.id_mercado);
+      await Product.personasActual(ingreso,salida,id);
+      
+      let datos=_.temperatura;
+      console.log(datos); 
+      for (const element of datos) {
+        await Product.insertTemperatura(id,element);
+      }
 
         res.send({ success: true, message: "succesfully !!" });
+      }else{
+        res.send({ success: false, message: "bad request !!" });
+      }
      
     } else {
       res.send({ success: false, message: "bad request !!" });
@@ -26,9 +38,9 @@ class ProductController {
   }
   async todosMercados(req,res){
     let _ = req.body;
-    let result = await Product.validar_token(_.token);
+    let token ='202fef8b-dfe6-4f1d-b667-4d698b9c0585' ;
   
-      if (result.length > 0) {
+      if (token==_.token) {
         let resultado = await Product.todosMercados();
 
         res.send({ success: true, message: "succesfully !!", data: resultado });
@@ -368,6 +380,32 @@ async caserosxcategoria(req,res){
       res.send({ success: false, message: "bad request !!" });
     }
   }
+  async registrarVenta(req,res){
+    let _ = req.body;
+    let result = await Product.validar_token(_.token);
+
+    if (result.length > 0) {
+     
+      let id=await Product.encontrarid(_.token);
+      if (_.tipo==1) {
+        await Product.registrarVenta(_.fecha_entrega,_.horario,_.delivery,
+          _.monto,_.montoFinal,_.id_transaccion,_.status,_.statusdetails,_.propina,_.tipo,id,_.id_lista);
+      }else{
+        if (_.tipo==2) {
+          let deli=0;
+          let propi=0;
+          await Product.registrarVenta(_.fecha_entrega,_.horario,deli,
+            _.monto,_.montoFinal,_.id_transaccion,_.status,_.statusdetails,propi,_.tipo,id,id,_.id_lista);
+        }
+      }
+
+        res.send({ success: true, message: "succesfully !!"});
+     
+    } else {
+      res.send({ success: false, message: "bad request !!" });
+    } 
+  }
+
 }
 
 

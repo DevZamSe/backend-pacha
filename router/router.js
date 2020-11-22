@@ -27,6 +27,7 @@ router.post("/product/agregarFavoritoProducto", ProductController.agregarFavorit
 //router.post("/product/agregarlista", ProductController.agregarlista);
 router.post("/product/eliminarlista", ProductController.eliminarlista);
 router.post("/product/agregaralista", ProductController.agregaralista);
+router.post("/venta/registrarVenta", ProductController.registrarVenta);
 router.post("/product/updatealista", ProductController.updatealista);
 router.post("/product/deleteproductoslista", ProductController.deleteproductoslista);
 router.post("/product/agregarFavoritoCasero", ProductController.agregarFavoritoCasero);

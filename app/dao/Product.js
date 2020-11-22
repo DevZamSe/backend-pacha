@@ -17,6 +17,20 @@ class Product {
 
     return result;
   }
+  async mercadoId(nombre){
+  let query = `select id from mercados where nombre=?`;
+    let params = [nombre];
+    let result = await db.query(query, params);
+
+    return result;
+  }
+  async insertTemperatura(id_mercado,temperatura){
+    let query = `insert into temperatura(id_mercado,temperatura) values(?,?)`;
+    let params = [id_mercado,temperatura];
+    let result = await db.query(query, params);
+
+    return result;
+  }
   async cantidadExacta(id_mercado){
 
     let query = `select cola,actual from mercados where id = ?`;
@@ -264,6 +278,16 @@ class Product {
     let result = await db.query(query, params);
 
     return result;
+  }
+  async registrarVenta(fecha_entrega,horario,delivery,
+    monto,montoFinal,id_transaccion,status,statusdetails,propina,tipo,id,id_lista){
+      let query = `insert into ventas(fecha_entrega,horario,delivery,
+        monto,montoFinal,id_transaccion,status,statusdetails,propina,tipo,id,id_lista) values(?,?,?,?,?,?,?,?,?,?,?,?)`;
+      let params = [fecha_entrega,horario,delivery,
+        monto,montoFinal,id_transaccion,status,statusdetails,propina,estado,tipo,id,id_lista];
+      let result = await db.query(query, params);
+  
+      return result;
   }
 
 }
