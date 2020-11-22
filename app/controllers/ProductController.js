@@ -38,15 +38,11 @@ class ProductController {
   }
   async todosMercados(req,res){
     let _ = req.body;
-    let token ='202fef8b-dfe6-4f1d-b667-4d698b9c0585' ;
   
-      if (token==_.token) {
         let resultado = await Product.todosMercados();
 
         res.send({ success: true, message: "succesfully !!", data: resultado });
-      } else {
-        res.send({ success: false, message: "bad request !!" });
-      }
+
     
   }
   async categoriasxmercado(req,res){
