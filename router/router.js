@@ -16,7 +16,8 @@ router.post("/user/datos", UserController.datos);
 //router.post("/user/changuePass", UserController.changuePass);
 
 // Product Routes
-router.get("/mercados", ProductController.todosMercados);
+router.post("/mercados", ProductController.todosMercados);
+router.post("/mercados/nombres", ProductController.todosMercadosxid);
 router.post("/pacha/iot/mercados", ProductController.personasActual);
 router.post("/mercado/categorias", ProductController.categoriasxmercado);
 router.post("/product/detalleProducto", ProductController.detalleProducto);

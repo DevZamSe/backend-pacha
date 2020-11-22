@@ -56,6 +56,13 @@ class Product {
 
     return result;
   }
+  async todosMercadosxid(){
+      let query = `select nombre from mercados`;
+    let params = [];
+    let result = await db.query(query, params);
+
+    return result;  
+  }
 
   async categoriasxmercado(id_mercado) {
     console.log(arguments);

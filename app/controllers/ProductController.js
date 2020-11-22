@@ -38,11 +38,24 @@ class ProductController {
   }
   async todosMercados(req,res){
     let _ = req.body;
+    let result = await Product.validar_token(_.token);
   
+      if (result.length > 0) {
         let resultado = await Product.todosMercados();
 
         res.send({ success: true, message: "succesfully !!", data: resultado });
+      } else {
+        res.send({ success: false, message: "bad request !!" });
+      }
+    
+  }
+    async todosMercadosxid(req,res){
+    let _ = req.body;
+    
+        let resultado = await Product.todosMercadosxid();
 
+        res.send({ success: true, message: "succesfully !!", data: resultado });
+    
     
   }
   async categoriasxmercado(req,res){
