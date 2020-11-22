@@ -10,9 +10,9 @@ class Product {
   //         return result;
   //     }
 
-  async personasActual(ingreso,salida,id_mercado){
-    let query = `update mercados set cola=?, actual=? where id=?`;
-    let params = [ingreso,salida,id_mercado];
+  async personasActual(total,id_mercado){
+    let query = `update mercados set actual=? where id=?`;
+    let params = [total, id_mercado];
     let result = await db.query(query, params);
 
     return result;

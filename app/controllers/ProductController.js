@@ -6,23 +6,25 @@ class ProductController {
 
   async personasActual(req,res){
     let _ = req.body;
-    //let result = await Product.validar_token(_.token);
-    let token = '202fef8b-dfe6-4f1d-b667-4d698b9c0585';
-    if (token=_.token) {
+    if ('202fef8b-dfe6-4f1d-b667-4d698b9c0585'==_.token && _.ingreso == _.temperatura.length) {
 
       let [{id}]=await Product.mercadoId(_.nombre_mercado);
-        console.log(id);
+        console.log("el id es "+id);
       if (id!=null) {
       let [{cola,actual}] = await Product.cantidadExacta(id);
-      console.log(cola);
-      console.log(actual);
 
-      let ingreso=cola+_.ingreso;
-      let salida=actual+_.salida;
-      await Product.personasActual(ingreso,salida,id);
+      let i = parseInt(_.ingreso);
+      let o = parseInt(_.salida);
+
+      let total = actual + i - o;
+
+      console.log(total);
+
+      await Product.personasActual(total, id);
       
       let datos=_.temperatura;
       console.log(datos); 
+
       for (const element of datos) {
         await Product.insertTemperatura(id,element);
       }

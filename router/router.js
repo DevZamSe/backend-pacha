@@ -63,7 +63,6 @@ router.post("/categoria/productosPedido", ProductCaseroController.productosxcate
 router.post("/abastecimiento/categorias", ProductCaseroController.abastecimientoCategorias);
 router.post("/abastecimiento/Productos", ProductCaseroController.listaProductos);
 
-
 //router.post("/productos/abastecimiento", ProductCaseroController.abastecimiento);
 router.post("/abastecimiento/guardarenAlmacen", ProductCaseroController.abastecimientoProduct);
 
