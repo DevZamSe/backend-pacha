@@ -1,15 +1,6 @@
 const db = require("./../../common/db/mysqldb");
 
 class Product {
-  //     async addProduct(id_usuario, nombre, precio, categoria, marca, stock, imagen, descripcion) {
-  //         console.log(arguments);
-  //         let query = `insert into producto (id_usuario, nombre, precio, categoria, marca, stock, imagen, descripcion) values(?,?,?,?,?,?,?,?)`;
-  //         let params = [id_usuario, nombre, precio, categoria, marca, stock, imagen, descripcion];
-  //         let result = await db.query(query, params);
-
-  //         return result;
-  //     }
-
   async personasActual(total,id_mercado){
     let query = `update mercados set actual=? where id=?`;
     let params = [total, id_mercado];
@@ -27,6 +18,20 @@ class Product {
   async insertTemperatura(id_mercado,temperatura){
     let query = `insert into temperatura(id_mercado,temperatura) values(?,?)`;
     let params = [id_mercado,temperatura];
+    let result = await db.query(query, params);
+
+    return result;
+  }
+  async promTemperatura(id_mercado){
+    let query = `select avg(temperatura) as prom from temperatura where id_mercado = ?`;
+    let params = [id_mercado];
+    let result = await db.query(query, params);
+
+    return result;
+  }  
+  async updateTemperatura(prom, id){
+    let query = `update mercados set temperatura=? where id=?`;
+    let params = [prom, id];
     let result = await db.query(query, params);
 
     return result;

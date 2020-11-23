@@ -8,26 +8,21 @@ class ProductController {
     let _ = req.body;
     if ('202fef8b-dfe6-4f1d-b667-4d698b9c0585'==_.token && _.ingreso == _.temperatura.length) {
 
-      let [{id}]=await Product.mercadoId(_.nombre_mercado);
-        console.log("el id es "+id);
-      if (id!=null) {
-      let [{cola,actual}] = await Product.cantidadExacta(id);
+        let [{id}]=await Product.mercadoId(_.nombre_mercado);
+          console.log("el id es "+id);
+        if (id!=null) {
+        let [{cola,actual}] = await Product.cantidadExacta(id);
+        let i = parseInt(_.ingreso);
+        let o = parseInt(_.salida);
+        let total = actual + i - o;
+        await Product.personasActual(total, id);
+        let datos=_.temperatura;
+        for (const element of datos) {
+          await Product.insertTemperatura(id,element);
+        }
 
-      let i = parseInt(_.ingreso);
-      let o = parseInt(_.salida);
-
-      let total = actual + i - o;
-
-      console.log(total);
-
-      await Product.personasActual(total, id);
-      
-      let datos=_.temperatura;
-      console.log(datos); 
-
-      for (const element of datos) {
-        await Product.insertTemperatura(id,element);
-      }
+        let [{prom}] = await Product.promTemperatura(id);
+        await Product.updateTemperatura(prom, id);
 
         res.send({ success: true, message: "succesfully !!" });
       }else{
