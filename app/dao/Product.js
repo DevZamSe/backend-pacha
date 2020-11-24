@@ -37,8 +37,7 @@ class Product {
     return result;
   }
   async cantidadExacta(id_mercado){
-
-    let query = `select cola,actual from mercados where id = ?`;
+    let query = `select aforo,actual from mercados where id = ?`;
     let params = [id_mercado];
     let result = await db.query(query, params);
 

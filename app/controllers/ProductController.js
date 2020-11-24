@@ -13,20 +13,27 @@ class ProductController {
           console.log("han entrado "+_.ingreso);
           console.log("han salido "+_.salida)
         if (id!=null) {
-        let [{cola,actual}] = await Product.cantidadExacta(id);
+        let [{aforo,actual}] = await Product.cantidadExacta(id);
         let i = parseInt(_.ingreso);
         let o = parseInt(_.salida);
         let total = actual + i - o;
-        await Product.personasActual(total, id);
-        let datos=_.temperatura;
-        for (const element of datos) {
-          await Product.insertTemperatura(id,element);
+
+
+          if(total<aforo && total>0){
+          await Product.personasActual(total, id);
+          let datos=_.temperatura;
+          for (const element of datos) {
+            await Product.insertTemperatura(id,element);
+          }
+  
+          let [{prom}] = await Product.promTemperatura(id);
+          await Product.updateTemperatura(prom, id);
+  
+          res.send({ success: true, message: "succesfully !!" });
+        } else {
+          res.send({ success: false, message: "Calibrar Sensor" });
         }
 
-        let [{prom}] = await Product.promTemperatura(id);
-        await Product.updateTemperatura(prom, id);
-
-        res.send({ success: true, message: "succesfully !!" });
       }else{
         res.send({ success: false, message: "bad request !!" });
       }
