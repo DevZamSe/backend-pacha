@@ -78,7 +78,7 @@ class Product {
   }
   async listaFavoritosCaseros(id_mercado,id){
     console.log(arguments);
-    let query = `SELECT DISTINCT t2.id,t2.nombre,t2.img,t3.numero,t4.id_categoria,t1.estado from favoritos_puesto as t1 INNER JOIN caseros as t2 on t1.id_casero=t2.id INNER JOIN puestos as t3 on t2.id=t3.casero INNER JOIN puesto_categorias as t4 on t3.id=t4.id_puesto INNER JOIN categorias as t5 on t4.id_categoria=t5.id INNER JOIN detalle_mercado as t6 on t5.id=t6.id_categoria where t6.id_mercado=? and  t1.id_cliente=?`;
+    let query = `SELECT DISTINCT t2.id,t2.nombre,t2.img,t3.numero,t4.id_categoria,t1.estado from favoritos_puesto as t1 INNER JOIN caseros as t2 on t1.id_casero=t2.id INNER JOIN puestos as t3 on t2.id=t3.casero INNER JOIN puesto_categorias as t4 on t3.id=t4.id_puesto INNER JOIN categorias as t5 on t4.id_categoria=t5.id where t3.mercado=? and t1.id_cliente=?`;
     let params = [id_mercado,id];
     let result = await db.query(query, params);
 
@@ -86,7 +86,7 @@ class Product {
   }
   async caserosxcategoria(id_mercado){
   
-    let query = `select t1.id,t1.nombre,t1.img,t2.numero,t3.id_categoria from caseros as t1 INNER JOIN puestos as t2 on t1.id=t2.casero INNER JOIN puesto_categorias as t3 on t2.id=t3.id_puesto INNER JOIN categorias as t4 on t3.id_categoria=t4.id INNER JOIN detalle_mercado as t5 on t4.id=t5.id_categoria where t5.id_mercado=?`;
+    let query = `select t1.id,t1.nombre,t1.img,t2.numero,t3.id_categoria,t2.mercado from caseros as t1 INNER JOIN puestos as t2 on t1.id=t2.casero INNER JOIN puesto_categorias as t3 on t2.id=t3.id_puesto INNER JOIN categorias as t4 on t3.id_categoria=t4.id  where t2.mercado=?`;
     let params = [id_mercado];
     let result = await db.query(query, params);
 
