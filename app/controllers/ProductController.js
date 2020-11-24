@@ -10,6 +10,8 @@ class ProductController {
 
         let [{id}]=await Product.mercadoId(_.nombre_mercado);
           console.log("el id es "+id);
+          console.log("han entrado "+_.ingreso);
+          console.log("han salido "+_.salida)
         if (id!=null) {
         let [{cola,actual}] = await Product.cantidadExacta(id);
         let i = parseInt(_.ingreso);
