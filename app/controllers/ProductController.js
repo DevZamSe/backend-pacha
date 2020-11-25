@@ -28,8 +28,13 @@ class ProductController {
   
           let [{prom}] = await Product.promTemperatura(id);
           await Product.updateTemperatura(prom, id);
-  
-          res.send({ success: true, message: "succesfully !!" });
+          
+          let a=[];
+          a.push({total});
+          a.push({aforo});
+          a.push({prom});
+           console.log(a);;  
+          res.send({ success: true, message: "succesfully !!",data:a});
         } else {
           res.send({ success: false, message: "Calibrar Sensor" });
         }
