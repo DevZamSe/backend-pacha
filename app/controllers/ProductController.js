@@ -380,6 +380,22 @@ async caserosxcategoria(req,res){
       res.send({ success: false, message: "bad request !!" });
     }
   }
+  async mercadoxpuesto(req,res){
+    let _ = req.body;
+    let result = await Product.validar_token(_.token);
+
+    if ((result.length > 0)) {
+     
+      let resultado = await Product.mercadoxpuesto(_.id_puesto);
+      if (resultado.length > 0) {
+        res.send({ success: true, message: "succesfully !!", data: resultado });
+      } else {
+        res.send({ success: false, message: "bad request !!" });
+      }
+    } else {
+      res.send({ success: false, message: "bad request !!" });
+    }
+  }
   async eliminarlista(req,res){
     let _ = req.body;
     let result = await Product.validar_token(_.token);
