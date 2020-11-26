@@ -423,7 +423,8 @@ async caserosxcategoria(req,res){
 
     if (result.length > 0) {
      
-      let id=await Product.encontrarid(_.token);
+      let [{id}]=await Product.encontrarid(_.token);
+      console.log(id);
       if (_.tipo==1) {
         await Product.registrarVenta(_.fecha_entrega,_.horario,_.delivery,
           _.monto,_.montoFinal,_.id_transaccion,_.status,_.statusdetails,_.propina,_.tipo,id,_.id_lista);
@@ -432,7 +433,7 @@ async caserosxcategoria(req,res){
           let deli=0;
           let propi=0;
           await Product.registrarVenta(_.fecha_entrega,_.horario,deli,
-            _.monto,_.montoFinal,_.id_transaccion,_.status,_.statusdetails,propi,_.tipo,id,id,_.id_lista);
+            _.monto,_.montoFinal,_.id_transaccion,_.status,_.statusdetails,propi,_.tipo,id,_.id_lista);
         }
       }
 

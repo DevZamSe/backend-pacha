@@ -300,9 +300,9 @@ class Product {
   async registrarVenta(fecha_entrega,horario,delivery,
     monto,montoFinal,id_transaccion,status,statusdetails,propina,tipo,id,id_lista){
       let query = `insert into ventas(fecha_entrega,horario,delivery,
-        monto,montoFinal,id_transaccion,status,statusdetails,propina,tipo,id,id_lista) values(?,?,?,?,?,?,?,?,?,?,?,?)`;
+        monto,montoFinal,id_transaccion,status,statusdetails,propina,tipo,cliente,id_lista) values(?,?,?,?,?,?,?,?,?,?,?,?)`;
       let params = [fecha_entrega,horario,delivery,
-        monto,montoFinal,id_transaccion,status,statusdetails,propina,estado,tipo,id,id_lista];
+        monto,montoFinal,id_transaccion,status,statusdetails,propina,tipo,id,id_lista];
       let result = await db.query(query, params);
   
       return result;
