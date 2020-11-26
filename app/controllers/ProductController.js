@@ -195,7 +195,7 @@ async caserosxcategoria(req,res){
     let result = await Product.validar_token(_.token);
     
     let set = new Set();
-    var ids=[], contenido = [], idspedido=[], nameCaseros=[];    
+    var ids=[], contenido = [], idspedido=[], nameCaseros=[], idPrecio=[];    
     if ((result.length > 0)) {
        let datos=_.datos;
        for (const element of datos) {
@@ -203,7 +203,6 @@ async caserosxcategoria(req,res){
        }
 
        ids = [...set];
-
        for (const element of ids){
          var data = datos.filter(item => item['id_casero']===element);
          contenido.push(data);
@@ -217,20 +216,18 @@ async caserosxcategoria(req,res){
 
         let {insertId}=await Product.agregarlista(id,texto,id_puesto);
         let id_lista=insertId;  
+        var precio = 0;
         for (const element of u) {
           let {insertId}=await Product.agregarprepedido(element['id'],element['cantidad'],id);
           // idspedido.push(insertId);
           await Product.agregaralista(id_lista,insertId);
+          precio = element['precio']*element['cantidad'] + precio;
         }
         idspedido.push(id_lista);
         nameCaseros.push(u[0]['nombre_casero']);
+        idPrecio.push(precio);
       }
-
-      console.log('-------------');
-      console.log(idspedido);
-
-      res.send({ success: true, message: "succesfully !!",data:{"id_lista":idspedido, "name_caseros":nameCaseros}});
-
+      res.send({ success: true, message: "succesfully !!",data:{"id_lista":idspedido, "name_caseros":nameCaseros, "precio":idPrecio}});
     } else {
       res.send({ success: false, message: "bad request !!" });
     }
