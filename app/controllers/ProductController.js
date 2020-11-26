@@ -189,45 +189,48 @@ async caserosxcategoria(req,res){
       res.send({ success: false, message: "bad request !!" });
     }
   }
-  // async agregarlista(req,res){
-  //   let _ = req.body;
-  //   let result = await Product.validar_token(_.token);
 
-  //   if ((result.length > 0)) {
-  //     let [{id}]=await Product.encontrarid(_.token);
-  //      await Product.agregarlista(id);
-
-  //       res.send({ success: true, message: "succesfully !!" });
-     
-  //   } else {
-  //     res.send({ success: false, message: "bad request !!" });
-  //   }
-  // }
-  
   async agregaralista(req,res){
     let _ = req.body;
     let result = await Product.validar_token(_.token);
-    var idspedido=[];    
+    
+    let set = new Set();
+    var ids=[], contenido = [], idspedido=[], nameCaseros=[];    
     if ((result.length > 0)) {
-       let [{id}]=await Product.encontrarid(_.token);
-       
        let datos=_.datos;
-       let cuenta= await Product.cantidadLista(id);
-       let texto=`Lista de compras ${cuenta.length+1}`;
-       let [{id_puesto}]= await Product.idPuestobyCaasero(_.id_casero)
-       console.log(id_puesto);
-       let {insertId}=await Product.agregarlista(id,texto,id_puesto);
-       let id_lista=insertId;  
-       console.log(id_lista);
        for (const element of datos) {
-        let {insertId}=await Product.agregarprepedido(element['id'],element['cantidad'],id);
-         idspedido.push(insertId);
-         await Product.agregaralista(id_lista,insertId);
+         set.add(element['id_casero']);
        }
-       console.log(idspedido);
 
-        res.send({ success: true, message: "succesfully !!",data:id_lista });
-      
+       ids = [...set];
+
+       for (const element of ids){
+         var data = datos.filter(item => item['id_casero']===element);
+         contenido.push(data);
+        }
+
+      for (const u of contenido){
+        let [{id}]=await Product.encontrarid(_.token);
+        let cuenta= await Product.cantidadLista(id);
+        let texto=`Lista de compras ${cuenta.length+1}`;
+        let [{id_puesto}] = await Product.idPuestobyCaasero(u[0]['id_casero']);
+
+        let {insertId}=await Product.agregarlista(id,texto,id_puesto);
+        let id_lista=insertId;  
+        for (const element of u) {
+          let {insertId}=await Product.agregarprepedido(element['id'],element['cantidad'],id);
+          // idspedido.push(insertId);
+          await Product.agregaralista(id_lista,insertId);
+        }
+        idspedido.push(id_lista);
+        nameCaseros.push(u[0]['nombre_casero']);
+      }
+
+      console.log('-------------');
+      console.log(idspedido);
+
+      res.send({ success: true, message: "succesfully !!",data:{"id_lista":idspedido, "name_caseros":nameCaseros}});
+
     } else {
       res.send({ success: false, message: "bad request !!" });
     }
