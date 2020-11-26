@@ -226,7 +226,7 @@ async caserosxcategoria(req,res){
        }
        console.log(idspedido);
 
-        res.send({ success: true, message: "succesfully !!" });
+        res.send({ success: true, message: "succesfully !!",data:id_lista });
       
     } else {
       res.send({ success: false, message: "bad request !!" });
