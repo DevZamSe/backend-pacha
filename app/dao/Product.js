@@ -263,7 +263,7 @@ class Product {
     return result;
   }
   async mercadoxpuesto(id_puesto){
-    let query = `select t1.aforo from mercados as t1 inner join puestos as t2 on t1.id=t2.mercado inner join caseros as t3 on t2.casero=t3.id where t3.id=?`;
+    let query = `select t1.aforo,t1.actual from mercados as t1 inner join puestos as t2 on t1.id=t2.mercado inner join caseros as t3 on t2.casero=t3.id where t3.id=?`;
     let params = [id_puesto];
     let result = await db.query(query, params);
 

@@ -386,10 +386,11 @@ async caserosxcategoria(req,res){
 
     if ((result.length > 0)) {
      
-      let [{aforo}] = await Product.mercadoxpuesto(_.id_puesto);
-      console.log(aforo);
-      if (aforo!=null) {
-        res.send({ success: true, message: "succesfully !!", data: aforo });
+      let resultado = await Product.mercadoxpuesto(_.id_puesto);
+      console.log(resultado);
+      
+      if (resultado!=null) {
+        res.send({ success: true, message: "succesfully !!",data:resultado });
       } else {
         res.send({ success: false, message: "bad request !!" });
       }
