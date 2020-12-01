@@ -169,6 +169,13 @@ class Product {
 
     return result;
   }
+  async InsertListaPuesto(id_lista,id_puesto){
+    let query = `insert into lista_puesto(id_lista,id_puesto) values(?,?)`;
+    let params = [id_lista,id_puesto];
+    let result = await db.query(query, params);
+
+    return result;
+  }
   async updatelistas(titulo,id,id_cliente){
     let query = `update listas set titulo=? where id=? and cliente=?`;
     let params = [titulo,id,id_cliente];

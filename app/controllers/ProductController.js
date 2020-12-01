@@ -214,8 +214,10 @@ async caserosxcategoria(req,res){
 
       for (const u of contenido){
         let [{id_puesto}] = await Product.idPuestobyCaasero(u[0]['id_casero']);
-        let {insertId}=await Product.agregarlista(id,texto,id_puesto);
+            
+        let {insertId}=await Product.agregarlista(id,texto);
         let id_lista=insertId;  
+        await Product.InsertListaPuesto(id_lista,id_puesto);
         var precio = 0;
         for (const element of u) {
           let {insertId}=await Product.agregarprepedido(element['id'],element['cantidad'],id);
