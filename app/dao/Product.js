@@ -162,9 +162,9 @@ class Product {
 
     return result;
   }
-  async agregarlista(id,texto,id_puesto){
-    let query = `insert into listas(cliente,titulo,id_puesto) values(?,?,?)`;
-    let params = [id,texto,id_puesto];
+  async agregarlista(id,texto){
+    let query = `insert into listas(cliente,titulo) values(?,?)`;
+    let params = [id,texto];
     let result = await db.query(query, params);
 
     return result;
