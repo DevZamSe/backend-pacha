@@ -170,7 +170,7 @@ class Product {
     return result;
   }
   async InsertListaPuesto(id_lista,id_puesto){
-    let query = `insert into lista_puesto(id_lista,id_puesto) values(?,?)`;
+    let query = `insert into listas_puesto(id_lista,id_puesto) values(?,?)`;
     let params = [id_lista,id_puesto];
     let result = await db.query(query, params);
 
