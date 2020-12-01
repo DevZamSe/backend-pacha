@@ -208,12 +208,12 @@ async caserosxcategoria(req,res){
          contenido.push(data);
         }
 
-      for (const u of contenido){
-        let [{id}]=await Product.encontrarid(_.token);
-        let cuenta= await Product.cantidadLista(id);
-        let texto=`Lista de compras ${cuenta.length+1}`;
-        let [{id_puesto}] = await Product.idPuestobyCaasero(u[0]['id_casero']);
+      let [{id}]=await Product.encontrarid(_.token);
+      let cuenta= await Product.cantidadLista(id);
+      let texto=`Lista de compras ${cuenta.length+1}`;
 
+      for (const u of contenido){
+        let [{id_puesto}] = await Product.idPuestobyCaasero(u[0]['id_casero']);
         let {insertId}=await Product.agregarlista(id,texto,id_puesto);
         let id_lista=insertId;  
         var precio = 0;
