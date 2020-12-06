@@ -27,11 +27,11 @@ class ProductController {
           }
           let color;
           if(total<(aforo/4)){
-             color= 'verde';
+             color=0;
           } else if(total<(aforo/2)){
-             color= 'amarillo';
+             color=1;
           } else {
-             color='rojo';
+             color=2;
           }
 
           let [{prom}] = await Product.promTemperatura(id);
