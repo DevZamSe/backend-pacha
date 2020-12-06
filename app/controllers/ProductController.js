@@ -25,7 +25,15 @@ class ProductController {
           for (const element of datos) {
             await Product.insertTemperatura(id,element);
           }
-  
+          let color;
+          if(total<(aforo/4)){
+             color= 'verde';
+          } else if(total<(aforo/2)){
+             color= 'amarillo';
+          } else {
+             color='rojo';
+          }
+
           let [{prom}] = await Product.promTemperatura(id);
           await Product.updateTemperatura(prom, id);
           
@@ -33,8 +41,9 @@ class ProductController {
           a.push({total});
           a.push({aforo});
           a.push({prom});
+          a.push({color});
            console.log(a);;  
-          res.send({ success: true, message: "succesfully !!",data:a});
+          res.send({ success: true, message: "succesfully !!",total:total,aforo:aforo,temperatura:prom,color:color});
         } else {
           res.send({ success: false, message: "Calibrar Sensor" });
         }
