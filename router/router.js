@@ -5,6 +5,7 @@ const UserController = require("./../app/controllers/UserController");
 const ProductController = require("./../app/controllers/ProductController");
 const CaseroController = require("./../app/controllers/CaseroController");
 const ProductCaseroController = require("./../app/controllers/ProductCaseroController");
+const AdminController = require("./../app/controllers/AdminController");
 
 // User Routes
 router.get("/healthcheck", (req, res) => {
@@ -79,6 +80,11 @@ router.post("/puesto/pedidos", ProductCaseroController.pedidosxid);
 router.post("/puesto/detallePedido", ProductCaseroController.detallePedido);
 router.post("/puesto/updatePedidos", ProductCaseroController.updatePedidos);
 
+//--------------------------------------------------------------------------------------------------
+router.post("/admin/login", AdminController.login);
+router.post("/admin/aforo", AdminController.aforoLima);
+router.post("/admin/aforo/mercadoid", AdminController.mercadoid);
+router.post("/admin/aforoLimaFechas", AdminController.aforoLimaFechas);
 
 
 

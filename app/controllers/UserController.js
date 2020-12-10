@@ -7,10 +7,13 @@ class UserController {
     let _ = req.body;
     let result = await User.login(_.email, _.pass);
     let token = util.generateToken();
-
+   
     if (result.length > 0) {
+      let antiguotoken=result[0].token;
+      await User.updateToken(token,antiguotoken);
       let user = result[0];
       user.token = token;
+     
       res.send({ success: true, message: "Successfully !!", data: result });
     } else {
       res.send({ success: false, message: "Invalid User" });

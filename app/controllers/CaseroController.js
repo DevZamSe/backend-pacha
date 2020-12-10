@@ -9,8 +9,11 @@ class CaseroController {
       let token = util.generateToken();
   
       if (result.length > 0) {
+        let antiguotoken=result[0].token;
+        await Casero.updateToken(token,antiguotoken);
         let casero = result[0];
         casero.token = token;
+        
         res.send({ success: true, message: "Successfully !!", data: result });
       } else {
         res.send({ success: false, message: "Invalid User" });

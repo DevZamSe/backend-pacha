@@ -57,6 +57,14 @@ class Casero {
 
     return result;
   }
+  async updateToken(tokens, token) {
+    console.log(arguments);
+    let query = `update caseros set token = ? where token = ?`;
+    let params = [tokens, token];
+    let result = await db.query(query, params);
+
+    return result;
+  }
   async datos(token){
     let query = `select t1.id,t1.token,t1.nombre,t1.img,t1.ruc,t1.lat,t1.lon,t2.id,t2.empresa,t2.numero,t3.id_categoria from caseros as t1 inner join puestos as t2 on t1.id=t2.casero inner join puesto_categorias as t3 on t2.id=t3.id_puesto where t1.token=?`;
     let params = [token];
