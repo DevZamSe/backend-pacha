@@ -55,15 +55,29 @@ class Admin{
       }
       
       async suma(id){
-        let query = `SELECT sum(actual) as totaldia from historial where hora BETWEEN CURRENT_DATE and CURRENT_DATE+1 and id=?`;
+        let query = `SELECT count(id_entrada) as totaldia from temperatura where hora BETWEEN CURRENT_DATE and CURRENT_DATE+1 and id_mercado=?`;
         let params = [id];
         let result = await db.query(query, params);
     
         return result;  
       }
-      async aforoLimaFechas(fecha1,fecha2){
-        let query = `select t1.nombre,t2.* from historial where hora between ? and ? `;
-        let params = [fecha1,fecha2];
+      async maxFechas(fecha1,fecha2,id){
+        let query = `select hora as hora1,max(actual) as max from historial where hora between ? and ? and id=? `;
+        let params = [fecha1,fecha2,id];
+        let result = await db.query(query, params);
+    
+        return result;    
+      }
+      async minFechas(fecha1,fecha2,id){
+        let query = `select hora as hora2,min(actual) as min from historial where hora between ? and ? and id=? `;
+        let params = [fecha1,fecha2,id];
+        let result = await db.query(query, params);
+    
+        return result;    
+      }
+      async sumaFechas(fecha1,fecha2,id){
+        let query = `select count(id_entrada) as totaldia from temperatura where hora between ? and ? and id_mercado=? `;
+        let params = [fecha1,fecha2,id];
         let result = await db.query(query, params);
     
         return result;    
@@ -75,7 +89,56 @@ class Admin{
     
         return result;    
       }
-      
+      async temperatura(id){
+        let query = `SELECT MAX(temperatura) as cantidad1,min(temperatura) as cantidad2 from temperatura where id_mercado=? and hora BETWEEN CURRENT_DATE and CURRENT_DATE+1 `;
+        let params = [id];
+        let result = await db.query(query, params);
+    
+        return result;      
+      }
+      async idsMercados(){
+        let query = `SELECT id,nombre from mercados `;
+        let params = [];
+        let result = await db.query(query, params);
+    
+        return result;      
+      }
+      async cantidadmaximos(id){
+        let query = `SELECT count(id_entrada) as CantIdeal from temperatura WHERE id_mercado=? and temperatura < 36.9 and  hora BETWEEN CURRENT_DATE and CURRENT_DATE+1 `;
+        let params = [id];
+        let result = await db.query(query, params);
+
+        return result;    
+}     
+      async cantidadminimos(id){
+        let query = `SELECT count(id_entrada) as CantnoIdeal from temperatura WHERE id_mercado=? and temperatura >= 36.9 and  hora BETWEEN CURRENT_DATE and CURRENT_DATE+1 `;
+        let params = [id];
+        let result = await db.query(query, params);
+
+        return result;    
+      }   
+      async temperaturaAltaFechas(fecha1,fecha2,id){
+        let query = `select max(temperatura) as mmaximatemp from temperatura where hora between ? and ? and id_mercado=? `;
+        let params = [fecha1,fecha2,id];
+        let result = await db.query(query, params);
+    
+        return result;    
+      }  
+      async cantTempAlta(fecha1,fecha2,id){
+        let query = `select count(id_entrada) as cantTempAlta from temperatura where temperatura>36.9 and hora between ? and ? and id_mercado=? `;
+        let params = [fecha1,fecha2,id];
+        let result = await db.query(query, params);
+    
+        return result;    
+      }
+      async TotalAsistente(fecha1,fecha2,id){
+        let query = `select count(id_entrada) as TotalAsist from temperatura where hora between ? and ? and id_mercado=? `;
+        let params = [fecha1,fecha2,id];
+        let result = await db.query(query, params);
+    
+        return result;    
+      }
+  
 
 }
 module.exports=new Admin();
