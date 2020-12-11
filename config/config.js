@@ -1,17 +1,20 @@
 module.exports.CONFIGURATIONS = {
     DATABASE : {
         MYSQL:{
-         HOST :  "localhost",
-         USER :  "root",
-         PASSWORD : "",
-         DATABASE :"pacha"
+        HOST :  "mysql3000.mochahost.com",
+        USER :  "yenko80_pacha",
+        PASSWORD : "Pacha$2020",
+        DATABASE :"yenko80_simbio21"
         }
     }
 }
-// HOST :  "mysql3000.mochahost.com",
-// USER :  "yenko80_pacha",
-// PASSWORD : "Pacha$2020",
-// DATABASE :"yenko80_simbio21"
+
+
+//  HOST :  "localhost",
+//          USER :  "root",
+//          PASSWORD : "",
+//          DATABASE :"pacha"
+
 
 
 // HOST :  "mysql-luisangelnav12.alwaysdata.net",
