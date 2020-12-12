@@ -87,7 +87,7 @@ router.post("/admin/aforo/mercadoid", AdminController.mercadoid);
 router.post("/admin/aforoLimaFechas", AdminController.aforoLimaFechas);
 router.post("/admin/temperatura", AdminController.temperatura);
 router.post("/admin/temperatura/fechas", AdminController.temperaturaFechas);
-router.post("/admin/ip", AdminController.ip);
+router.get("/admin/ip", AdminController.ip);
 
 
 
