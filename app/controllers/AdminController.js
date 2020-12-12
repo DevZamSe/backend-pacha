@@ -171,6 +171,12 @@ class AdminController{
           res.send({ success: false, message: "bad request !!" });
         }
       }
+      async ip(req,res){
+        var ip = require('ip');
+
+        console.log(ip.address());
+
+      }
 
 }
 module.exports = new AdminController();
