@@ -89,11 +89,4 @@ router.post("/admin/temperatura", AdminController.temperatura);
 router.post("/admin/temperatura/fechas", AdminController.temperaturaFechas);
 router.get("/admin/ip", AdminController.ip);
 
-
-
-
-
-
-
-
 module.exports = router;
